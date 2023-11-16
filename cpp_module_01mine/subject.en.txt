@@ -1,0 +1,93 @@
+Assignment name  : cpp01_02
+Expected files   : Warlock.cpp Warlock.hpp
+                   ASpell.hpp ASpell.cpp
+				   ATarget.hpp ATarget.cpp
+				   Fwoosh.hpp Fwoosh.cpp
+				   Dummy.hpp Dummy.cpp
+--------------------------------------------------------------------------------
+
+Dans la classe Warlock, le status switch est interdit et son utilisation 
+resulterait d'un -42.
+
+Create une classe abstraite appele ASpell, dans une forme coplienne, qui
+a les attribut privee suivant :
+* name (string)
+* effects (string)
+
+Les deux auront des getters (getName et getEffects) qui retourne une string.
+
+Aussi, ajouter une methode de clone pure qui retourne un pointeur vers ASpell.
+
+Toutes ces fonctions peuvent etre appeler sur un objet constant.
+
+ASpell a un constructeur qui prend son nom et son effect, dans cette ordre.
+
+Maintenant vous aller creer une classe abstraite ATarget, en forme coplienne.
+Elle a un type attribut, qui est une chaine et son getter associe getType, qui
+renvoient une reference sur une string constante.
+
+De la meme maniere que ASpell, elle possede une methode de clone pure.
+
+Toutes ces fonctions pouront etre appele sur un objet constant.
+
+Elle possede un constructor qui prend son type.
+
+Maintenant, ajouter a votre ATarget une fonction getHitBySpell qui prend une
+reference sur ASpell constant.
+
+Elle affichera :
+
+<TYPE> has been <EFFECTS>!
+
+<TYPE> est le type de ATarget, et <EFFECTS> est le retour de la fonction
+ASpell getEffects.
+
+Enfin, ajouter a votre class ASpell une fontion de lancement qui fait
+reference a ATarget constant.
+
+Celui-ci appellera simplement getHitBySpell de l'objet passe, en passant
+l'instance courante comme parametre.
+
+Quand tout ceci est fait, creer une implementation de ASpell appele Fwoosh.
+Sont constructeur par defaut definira le nom par "Fwoosh" et l'effect par
+"fwooshed". Vous implementerait, bien sur la methode clone. Dans le cas
+de Fwoosh, il renverra un pointeur vers un nouvelle objet Fwoosh.
+
+De la meme maniere, creer une ATarget concrete appele Dummy, dont le type
+est "Target Practice Dummy". Vous devrez egalement implementer sa methode
+clone.
+
+Ajouter au warlock les fonctions membres suivante :
+
+* learnSpell, prend un pointeur vers ASpell, qui fait apprendre un spell au warlock.
+* forgetSpell, prend une string correspondant a un nom de spell et fait oublier ce
+  spell au warlock. Si ce n'est pas un sort connue, ne fait rien.
+* launchSpell, prend une string (le nom d'un sort) et une reference sur ATarget,
+  qui lance un spell sur la cible selectionnee. Si ce n'est pas un sort connue,ne fait rien.
+
+Vous allez avoir besoin d'un nouvelle attribut pour stocker les sorts que connait le warlock.
+Plusieurs type peuvent correspondre, a nous de choisir le meilleur.
+
+Ci-dessous, un test de main possible, avec les output attendu :
+
+int main()
+{
+  Warlock richard("Richard", "the Titled");
+
+  Dummy bob;
+  Fwoosh* fwoosh = new Fwoosh();
+
+  richard.learnSpell(fwoosh);
+
+  richard.introduce();
+  richard.launchSpell("Fwoosh", bob);
+
+  richard.forgetSpell("Fwoosh");
+  richard.launchSpell("Fwoosh", bob);
+}
+
+~$ ./a.out | cat -e
+Richard: This looks like another boring day.$
+Richard: I am Richard, the Titled!$
+Target Practice Dummy has been fwooshed!$
+Richard: My job here is done!$
