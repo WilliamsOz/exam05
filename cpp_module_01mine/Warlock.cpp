@@ -11,6 +11,9 @@ Warlock::Warlock(std::string const &name, std::string const &title)
 Warlock::~Warlock()
 {
 	std::cout << this->_name << ": My job here is done!"  << std::endl;
+	for (std::map<std::string, ASpell*>::iterator it = _spellBook.begin() ; it != _spellBook.end() ; it++)
+		delete it->second;
+	_spellBook.clear();
 	return ;
 }
 
@@ -35,18 +38,29 @@ void Warlock::introduce() const
 	return ;
 }
 
-void	learnSpell(ASpell *newspell)
+void	Warlock::learnSpell(ASpell *newspell)
 {
-	
+	if (newspell)
+		_spellBook.insert(std::pair<std::string, ASpell *>(newspell->getName(), newspell->clone()));
+	return ;
 }
 
-void	forgetSpell(std::string const spell)
+void	Warlock::forgetSpell(std::string const spellToForget)
 {
+	std::map<std::string, ASpell *>::iterator it = _spellBook.find(spellToForget);
 
+	if (it != _spellBook.end())
+		delete it->second;
+	_spellBook.erase(spellToForget);
+	return ;
 }
 
-void	launchSpell(std::string const spell, ATarget const &target)
+void	Warlock::launchSpell(std::string const spellToLaunch, ATarget const &target)
 {
+	ASpell* ptr_spellBook = _spellBook[spellToLaunch];
 
+	if (ptr_spellBook)
+		ptr_spellBook->launch(target);
+	return ;
 }
 

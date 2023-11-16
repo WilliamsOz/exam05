@@ -11,7 +11,7 @@ class Warlock
 	private:
 	std::string	_name;
 	std::string	_title;
-	std::map<std::string, ASpell *>	_allSpell;
+	std::map<std::string, ASpell *>	_spellBook;
 
 	Warlock( void ); //constructeur par defaut
 	Warlock( Warlock const &other ); // constructeur par copie
