@@ -1,0 +1,89 @@
+Assignment name  : cpp_module_02
+Expected files   : Warlock.cpp Warlock.hpp
+                   ASpell.hpp ASpell.cpp
+				   ATarget.hpp ATarget.cpp
+				   Fwoosh.hpp Fwoosh.cpp
+				   Dummy.hpp Dummy.cpp
+				   Fireball.hpp Fireball.cpp
+				   Polymorph.hpp Polymorph.cpp
+				   BrickWall.hpp BrickWall.cpp
+				   SpellBook.hpp SpellBook.cpp
+				   TargetGenerator.hpp TargetGenerator.cpp
+--------------------------------------------------------------------------------
+
+Dans les classes warlock, spellbook et targetgenerator, la declaration switch
+est interdit et son utilisation resulte d'un -42.
+
+Creez les deux spells suivant, sur le meme modele que Fwoosh :
+
+* Fireball (Name: "Fireball", Effects: "burnt to a crisp")
+* Polymorph (Name: "Polymorph", Effects: "turned into a critter")
+
+De plus, pour ne pas qu'il n'est qu'une cible d'entrainement a attaquer, creer
+une nouvelle target, qui sera le BrickWall (Type: "Inconspicuous Red-brick Wall").
+
+
+
+Maintenant, creer une class SpellBook, en forme canonique, qui ne peut etre copier
+ou instancier par copie. Elle aura les fonction suivante :
+
+* void learnSpell(ASpell*), that COPIES a spell in the book
+* void forgetSpell(string const &), that deletes a spell from the book, except
+  if it isn't there
+* ASpell* createSpell(string const &), that receives a string corresponding to
+  the name of a spell, creates it, and returns it.
+
+Modifier le warlock, faire un spellbook qui sera creer avec lui et detruit avec lui.
+Faites egalement en sorte que ses fonctions leanSpell et forgetSpell appellent
+celles du spellBook.
+
+la fonction launchSpell devront utiliser le spellbook pour creer les sorts
+qu'il essaye de lancer.
+
+Creer une class TargetGenerator, en forme canonique, et comme avant,
+non-copiable.
+
+Elle aura les fonctions suuivantes :
+
+* void learnTargetType(ATarget*), teaches a target to the generator
+
+* void forgetTargetType(string const &), that makes the generator forget a
+  target type if it's known
+
+* ATarget* createTarget(string const &), that creates a target of the
+  specified type
+
+
+Ouf, c'est fait. Maintenant voici un main de test. Ce n'est pas tres complet donc
+assurer vous d'avoir le votre.
+
+int main()
+{
+  Warlock richard("Richard", "foo");
+  richard.setTitle("Hello, I'm Richard the Warlock!");
+  BrickWall model1;
+
+  Polymorph* polymorph = new Polymorph();
+  TargetGenerator tarGen;
+
+  tarGen.learnTargetType(&model1);
+  richard.learnSpell(polymorph);
+
+  Fireball* fireball = new Fireball();
+
+  richard.learnSpell(fireball);
+
+  ATarget* wall = tarGen.createTarget("Inconspicuous Red-brick Wall");
+
+  richard.introduce();
+  richard.launchSpell("Polymorph", *wall);
+  richard.launchSpell("Fireball", *wall);
+}
+
+~$ ./a.out | cat -e
+Richard: This looks like another boring day.$
+Richard: I am Richard, Hello, I'm Richard the Warlock!!$
+Inconspicuous Red-brick Wall has been turned into a critter!$
+Inconspicuous Red-brick Wall has been burnt to a crisp!$
+Richard: My job here is done!$
+~$
